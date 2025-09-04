@@ -4,7 +4,6 @@ import Header from "../components/common/Header";
 
 function PrivateRoutes() {
   const { auth } = useAuth();
-  console.log(auth);
 
   return (
     <>
