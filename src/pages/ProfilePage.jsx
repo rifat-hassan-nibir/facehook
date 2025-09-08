@@ -3,6 +3,8 @@ import useAxios from "../hooks/useAxios";
 import { useAuth } from "../hooks/useAuth";
 import useProfile from "../hooks/useProfile";
 import { actions } from "../actions";
+import ProfileInfo from "../components/profile/ProfileInfo";
+import MyPosts from "../components/profile/MyPosts";
 
 const ProfilePage = () => {
   const { state, dispatch } = useProfile();
@@ -28,10 +30,19 @@ const ProfilePage = () => {
   if (state?.loading) return <div>Loading...</div>;
 
   return (
-    <div className="text-white">
-      {state?.user?.firstName}
-      <p>Posts: {state?.posts?.length}</p>
-    </div>
+    <main className="mx-auto max-w-[1020px] py-8">
+      <div className="container">
+        {/* profile info */}
+        <ProfileInfo />
+        {/* end profile info */}
+
+        <h4 className="mt-6 text-xl lg:mt-8 lg:text-2xl">Your Posts</h4>
+
+        {/* post  */}
+        <MyPosts />
+        {/* post ends */}
+      </div>
+    </main>
   );
 };
 
