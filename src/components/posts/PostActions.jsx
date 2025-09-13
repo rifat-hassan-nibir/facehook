@@ -1,14 +1,37 @@
 import LikeIcon from "../../assets/icons/like.svg";
 import CommentIcon from "../../assets/icons/comment.svg";
 import ShareIcon from "../../assets/icons/share.svg";
+import { useState } from "react";
+import useAxios from "../../hooks/useAxios";
+import { useAuth } from "../../hooks/useAuth";
 
-function PostActions({ postId, commentCount }) {
+function PostActions({ post, commentCount }) {
+  const { auth } = useAuth();
+  const [liked, setLiked] = useState(post?.likes?.includes(auth?.user?.id));
+  const { api } = useAxios();
+
+  const handleLike = async () => {
+    try {
+      const response = await api.patch(`${import.meta.env.VITE_SERVER_BASE_URL}/posts/${post?.id}/like`);
+
+      if (response.status === 200) {
+        setLiked(!liked);
+      }
+    } catch (error) {
+      console.log(error);
+      setLiked(false);
+    }
+  };
+
   return (
     <div className="flex items-center justify-between py-6 lg:px-10 lg:py-8">
       {/* Like Button */}
-      <button className="flex-center gap-2 text-xs font-bold text-[#B8BBBF] hover:text-white lg:text-sm">
+      <button
+        onClick={handleLike}
+        className="hover:cursor-pointer flex-center gap-2 text-xs font-bold text-[#B8BBBF] hover:text-white lg:text-sm"
+      >
         <img src={LikeIcon} alt="Like" />
-        <span>Like</span>
+        <span>{liked ? "Liked" : "Like"}</span>
       </button>
 
       {/* Comment Button */}
